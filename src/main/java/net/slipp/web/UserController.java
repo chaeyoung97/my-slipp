@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.DocFlavor;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,26 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @GetMapping("/users/loginForm")
+    public String loginForm(){
+        return "/user/login";
+    }
+    @PostMapping("/users/login")
+    public String login(String userId, String password, HttpSession session){
+        User user = userRepository.findByUserId(userId);
+
+        if(user == null){
+            System.out.println("Login Failure (id)");
+            return "redirect:/users/loginForm";
+        }
+        if(!password.equals(user.getPassword())){
+            System.out.println("Login Failure (password)");
+            return "redirect:/users/loginForm";
+        }
+        System.out.println("Login Success");
+        session.setAttribute("user", user);
+        return "redirect:/";
+    }
     @GetMapping("/users/form")
     public String form(){
         return "/user/form";
