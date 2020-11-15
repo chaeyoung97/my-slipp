@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/users/logout")
     public String logout(HttpSession session){
-        session.removeAttribute("user");
+        session.removeAttribute("sessionUser");
         System.out.println("Logout Success");
         return "redirect:/";
     }
@@ -41,7 +41,7 @@ public class UserController {
             return "redirect:/users/loginForm";
         }
         System.out.println("Login Success");
-        session.setAttribute("user", user);
+        session.setAttribute("sessionUser", user);
         return "redirect:/";
     }
     @GetMapping("/users/form")
@@ -64,8 +64,16 @@ public class UserController {
 
 
    @GetMapping("/users/{id}/form")
-    public String updateForm(@PathVariable Long id, Model model){
-        User user = userRepository.findById(id).get();
+    public String updateForm(@PathVariable Long id, Model model, HttpSession session){
+       Object tmpUser = session.getAttribute("sessionUser");
+       if(tmpUser == null){
+           return "redirect:/users/loginForm";
+       }
+       User sessionUser = (User)tmpUser;
+       //if(!id.equals(sessionUser.getId())){
+       //    throw new IllegalStateException("자신의 정보만 수정할 수 있습니다.");
+       //}
+        User user = userRepository.findById(sessionUser.getId()).get();
         model.addAttribute("user",user);
         //findOne이 자꾸에러가 나서 찾아보니 메소드명이 findById로 바뀌었다고 한다
        //그래서 findById().get()렇게 get으로 가져와 주어야한다.
@@ -73,9 +81,14 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public String update(@PathVariable Long id, User newUser){
-        User user = userRepository.findById(id).get();
-        user.update(newUser);
+    public String update(@PathVariable Long id, User updateUser, HttpSession session){
+        Object tmpUser = session.getAttribute("sessionUser");
+        if(tmpUser == null){
+            return "redirect:/users/loginForm";
+        }
+        User sessionUser =  (User)tmpUser;
+        User user = userRepository.findById(sessionUser.getId()).get();
+        user.update(updateUser);
         userRepository.save(user);
         /*save를 하면 userRepository에서는 어떻게 동작하냐면
         현재 해당하는 id값이 없으면 insert를 하고

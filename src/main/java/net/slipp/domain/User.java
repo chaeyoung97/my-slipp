@@ -8,7 +8,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)    //@GeneratedValue (= auto_increasement)
     private Long id;
 
-    @Column(nullable = false, length = 20)  //필드마다 속성 설정가능
+    @Column(nullable = false, length = 20, unique = true)  //필드마다 속성 설정가능
     private String userId;
     private String password;
     private String name;
@@ -36,6 +36,10 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
