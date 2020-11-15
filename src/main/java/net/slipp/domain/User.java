@@ -14,6 +14,16 @@ public class User {
     private String name;
     private String email;
 
+    public boolean matchPassword(String newPassword){
+        if(newPassword == null)
+            return false;
+        return newPassword.equals(password);
+    }
+    public boolean matchId(Long newId){
+        if(newId == null)
+            return  false;
+        return newId.equals(id);
+    }
     public void setId(Long id) {
         this.id = id;
     }
@@ -32,10 +42,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public Long getId() {

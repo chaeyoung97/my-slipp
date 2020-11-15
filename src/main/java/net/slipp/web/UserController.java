@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/users/logout")
     public String logout(HttpSession session){
-        session.removeAttribute("sessionUser");
+        session.removeAttribute(HttpSessionUtils.USER_SESSION_KEY);
         System.out.println("Logout Success");
         return "redirect:/";
     }
@@ -28,6 +28,7 @@ public class UserController {
     public String loginForm(){
         return "/user/login";
     }
+
     @PostMapping("/users/login")
     public String login(String userId, String password, HttpSession session){
         User user = userRepository.findByUserId(userId);
@@ -36,12 +37,12 @@ public class UserController {
             System.out.println("Login Failure (id)");
             return "redirect:/users/loginForm";
         }
-        if(!password.equals(user.getPassword())){
+        if(!user.matchPassword(password)){
             System.out.println("Login Failure (password)");
             return "redirect:/users/loginForm";
         }
         System.out.println("Login Success");
-        session.setAttribute("sessionUser", user);
+        session.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user);
         return "redirect:/";
     }
     @GetMapping("/users/form")
@@ -65,12 +66,11 @@ public class UserController {
 
    @GetMapping("/users/{id}/form")
     public String updateForm(@PathVariable Long id, Model model, HttpSession session){
-       Object tmpUser = session.getAttribute("sessionUser");
-       if(tmpUser == null){
+       if(!HttpSessionUtils.isLoginUser(session)){
            return "redirect:/users/loginForm";
        }
-       User sessionUser = (User)tmpUser;
-       //if(!id.equals(sessionUser.getId())){
+       User sessionUser = HttpSessionUtils.getUserFromSession(session);
+       //if(!sessionUser.matchId(id))){
        //    throw new IllegalStateException("자신의 정보만 수정할 수 있습니다.");
        //}
         User user = userRepository.findById(sessionUser.getId()).get();
@@ -82,11 +82,11 @@ public class UserController {
 
     @PutMapping("/users/{id}")
     public String update(@PathVariable Long id, User updateUser, HttpSession session){
-        Object tmpUser = session.getAttribute("sessionUser");
-        if(tmpUser == null){
+
+        if(!HttpSessionUtils.isLoginUser(session)){
             return "redirect:/users/loginForm";
         }
-        User sessionUser =  (User)tmpUser;
+        User sessionUser =  HttpSessionUtils.getUserFromSession(session);
         User user = userRepository.findById(sessionUser.getId()).get();
         user.update(updateUser);
         userRepository.save(user);

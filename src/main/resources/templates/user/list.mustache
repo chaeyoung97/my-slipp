@@ -21,9 +21,13 @@
                         <td>{{userId}}</td>
                         <td>{{name}}</td>
                         <td>{{email}}</td>
+
+                {{#sessionUser}}
                         <td><a href = "/users/{{id}}/form" class = "btn btn-success" role="button">수정</a></td>
-                     </tr>
+                {{/sessionUser}}
                 {{/users}}
+                </tr>
+
                 </tbody>
             </table>
         </div>
