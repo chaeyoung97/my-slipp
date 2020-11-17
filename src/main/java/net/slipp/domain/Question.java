@@ -5,6 +5,7 @@ import net.slipp.domain.User;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Entity
 public class Question {
@@ -43,4 +44,7 @@ public class Question {
         this.contents =contents;
     }
 
+    public boolean isSameWriter(User loginUser){
+        return this.writer.equals(loginUser);
+    }
 }
