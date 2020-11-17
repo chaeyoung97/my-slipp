@@ -42,4 +42,22 @@ public class QuestionController {
         model.addAttribute("question", question);
         return "/qna/show";
     }
+
+    @GetMapping("/{id}/updateForm")
+    public String updateForm(@PathVariable Long id, Model model){
+        model.addAttribute("question", questionRepository.findById(id).get());
+        return "/qna/updateForm";
+    }
+    @PutMapping("/{id}/update")
+    public String update(@PathVariable Long id, String title, String contents){
+        Question question = questionRepository.findById(id).get();
+        question.update(title, contents);
+        questionRepository.save(question);
+        return String.format("redirect:/questions/%d", id);
+    }
+   @DeleteMapping("/{id}/delete")
+    public String delete(@PathVariable Long id){
+        questionRepository.deleteById(id);
+        return "redirect:/";
+   }
 }
