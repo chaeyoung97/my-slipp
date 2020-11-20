@@ -1,5 +1,6 @@
 package net.slipp.domain;
 
+import lombok.NoArgsConstructor;
 import net.slipp.domain.User;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+@NoArgsConstructor //인자 없는 기본 생성자 생성
 @Entity
 public class Question {
 
@@ -23,8 +25,6 @@ public class Question {
     private String contents;
 
     private LocalDateTime createDate;
-
-    public Question(){}
 
     public Question(User writer, String title, String contents){
         super();
@@ -47,4 +47,10 @@ public class Question {
     public boolean isSameWriter(User loginUser){
         return this.writer.equals(loginUser);
     }
+
+
+/*
+    public Question(){}
+ */
 }
+
