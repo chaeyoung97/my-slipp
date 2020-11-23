@@ -6,6 +6,7 @@ import net.slipp.domain.User;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor //인자 없는 기본 생성자 생성
@@ -16,12 +17,17 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToMany(mappedBy = "question")
+    @OrderBy("id asc")
+    private List<Answer> answers;
+
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
     private User writer;
 
     private String title;
 
+    @Lob
     private String contents;
 
     private LocalDateTime createDate;
