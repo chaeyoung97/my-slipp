@@ -28,11 +28,45 @@ function  onSuccess(data, status){
     console.log(data);
 
    var answerTemplate = $("#answerTemplate").html();
-   var template = answerTemplate.format(data.writer.userId, data.formattedCreateDate, data.contents, data.id, data.id )
+   var template = answerTemplate.format(data.writer.userId, data.formattedCreateDate, data.contents, data.question.id, data.id)
     $(".qna-comment-slipp-articles").append(template);
 
    $(".answer-write textarea").val("");
 }
+
+$(".link-delete-article").click(deleteAnswer); //삭제 이벤트 디폴트 막기
+function deleteAnswer(e){
+    e.preventDefault();
+
+    var deleteBtn = $(this);
+    console.log(1);
+    var url = deleteBtn.attr("href");
+    console.log("url : " + url);
+
+    $.ajax({
+        type : 'delete',
+        url : url,
+        dataType : 'json',
+        error : onError,
+        success : onSuccess
+    });
+
+    function onError(){
+        console.log("error");
+    }
+
+    function  onSuccess(data, status){
+        console.log("success")
+        console.log(data);
+        if(data.vaild){
+            deleteBtn.closest("article").remove();
+        }else{
+            alert(data.errorMessage);
+        }
+    }
+
+}
+$(document).on('click', '.link-delete-article', deleteAnswer);
 
 String.prototype.format = function() {
     var args = arguments;

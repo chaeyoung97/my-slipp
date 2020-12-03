@@ -15,7 +15,6 @@ public class ApiAnswerController {
 
     private AnswerRepository answerRepository;
 
-
     private QuestionRepository questionRepository;
 
     @Autowired
@@ -37,4 +36,22 @@ public class ApiAnswerController {
         return answerRepository.save(answer);  //save는 전달한 인자를 그대로 리턴함
 
     }
+
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Long questionId, @PathVariable Long id, HttpSession session){
+        if(!HttpSessionUtils.isLoginUser(session)){
+            return Result.fail("로그인해야 합니다.");
+        }
+        User loginUser = HttpSessionUtils.getUserFromSession(session);
+        Answer answer = answerRepository.findById(id).get();
+
+        if(!answer.isSameWriter(loginUser)){
+            return Result.fail("자신의 글만 삭제할 수 있습니다.");
+        }
+
+        answerRepository.delete(answer);
+        return Result.ok();
+
+    }
+
 }
