@@ -82,7 +82,11 @@
                               </div>
                           </article>
                         {{/answers}}
-                          <form class="submit-write" method="post" action = "/questions/{{id}}/answers">
+                      </div>
+                          <!--json이라는 데이터만 응답으로 보내거나하는걸 기존 http메서드로 보내는거랑? 구분하기위해 api라는 말을 씀
+                            그래서 api가 붙어있으면 이것은 응답을 html로 주는게 아니라 json이나 data만 응답으로 준다는걸 인식할 수 있음
+                          -->
+                          <form class="answer-write" method="post" action = "/api/questions/{{id}}/answers">
                               <div class="form-group" style="padding:14px;">
                                   <textarea class="form-control" placeholder="Update your status" name="contents"></textarea>
                               </div>
@@ -90,7 +94,7 @@
                               <div class="clearfix" />
                           </form>
                       </div>
-                  </div>
+
               </div>
           </div>
         </div>

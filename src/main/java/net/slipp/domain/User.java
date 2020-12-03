@@ -1,5 +1,7 @@
 package net.slipp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,16 +13,24 @@ import java.util.Objects;
 @Setter //setter메소드 자동 생성
 @Entity
 public class User {
+    @JsonProperty //자바 객체에서 json데이터로 변환하고 싶은 필드에 붙임
     @Getter(AccessLevel.PUBLIC) //accessLevel은 접근 제한자 설정인데 public이 디폴트임
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)    //@GeneratedValue (= auto_increasement)
     private Long id;
 
+    @JsonProperty
     @Getter
     @Column(nullable = false, length = 20, unique = true)  //필드마다 속성 설정가능
     private String userId;
+
+    @JsonIgnore //명시적으로 처리하지 않겠다고 할 수도 있음
     private String password;
+
+    @JsonProperty
     private String name;
+
+    @JsonProperty //이케하면 getter없어도 json보낼 수 잇음
     private String email;
 
     public boolean matchPassword(String newPassword){

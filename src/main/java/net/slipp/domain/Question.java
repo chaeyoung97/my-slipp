@@ -1,5 +1,6 @@
 package net.slipp.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.NoArgsConstructor;
 import net.slipp.domain.User;
 
@@ -13,6 +14,7 @@ import java.util.Objects;
 @Entity
 public class Question {
 
+    @JsonProperty
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,12 +23,15 @@ public class Question {
     @OrderBy("id asc")
     private List<Answer> answers;
 
+    @JsonProperty
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
     private User writer;
 
+    @JsonProperty
     private String title;
 
+    @JsonProperty
     @Lob
     private String contents;
 

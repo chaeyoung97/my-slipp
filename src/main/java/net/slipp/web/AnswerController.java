@@ -13,13 +13,18 @@ import javax.servlet.http.HttpSession;
 //answer는 항상 question에 종속적이기떄문에 기본 url을 이렇게 설계하는게 좋다.
 @RequestMapping("/questions/{questionId}/answers")
 @Controller
-public class AnswerContoller {
+public class AnswerController {
 
-    @Autowired
     private AnswerRepository answerRepository;
 
-    @Autowired
+
     private QuestionRepository questionRepository;
+
+    @Autowired
+    public AnswerController(AnswerRepository answerRepository, QuestionRepository questionRepository){
+        this.answerRepository = answerRepository;
+        this.questionRepository = questionRepository;
+    }
 
     @PostMapping("")
     public String create(@PathVariable Long questionId, String contents, HttpSession session, Model model){
