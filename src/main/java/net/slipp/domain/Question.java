@@ -35,6 +35,9 @@ public class Question {
     @Lob
     private String contents;
 
+    @JsonProperty
+    private Integer countOfAnswer = 0;
+
     private LocalDateTime createDate;
 
     public Question(User writer, String title, String contents){
@@ -58,6 +61,15 @@ public class Question {
     public boolean isSameWriter(User loginUser){
         return this.writer.equals(loginUser);
     }
+
+    public void addAnswer() {
+        this.countOfAnswer += 1;
+    }
+
+    public void deleteAnswer(){
+        this.countOfAnswer -= 1;
+    }
+
 
 
 /*
