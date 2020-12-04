@@ -12,7 +12,7 @@ import java.util.Objects;
 @ToString   //toString메소드 자동 생성
 @Setter //setter메소드 자동 생성
 @Entity
-public class User {
+public class User extends AbstractEntity{
     @JsonProperty //자바 객체에서 json데이터로 변환하고 싶은 필드에 붙임
     @Getter(AccessLevel.PUBLIC) //accessLevel은 접근 제한자 설정인데 public이 디폴트임
     @Id

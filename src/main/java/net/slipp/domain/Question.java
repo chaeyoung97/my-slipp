@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @NoArgsConstructor //인자 없는 기본 생성자 생성
 @Entity
-public class Question {
+public class Question extends AbstractEntity{
 
     @JsonProperty
     @Id
@@ -38,21 +38,17 @@ public class Question {
     @JsonProperty
     private Integer countOfAnswer = 0;
 
-    private LocalDateTime createDate;
+//    private LocalDateTime createDate;
 
     public Question(User writer, String title, String contents){
         super();
         this.writer = writer;
         this.title =title;
         this.contents =contents;
-        this.createDate = LocalDateTime.now();
+//        this.createDate = LocalDateTime.now();
     }
 
-    public String getFormattedCreateDate(){
-        if(createDate == null)
-            return "";
-        return createDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
-    }
+
     public void update(String title, String contents){
         this.title = title;
         this.contents =contents;

@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-public class Answer {
+public class Answer extends AbstractEntity {
 
     @JsonProperty
     @Id
@@ -33,21 +33,15 @@ public class Answer {
     @JsonProperty
     @Lob    //이거 사용하면 255자보다 많은 것을 저장할 수 있다.
     private String contents;
-
-    @JsonProperty
-    private LocalDateTime createDate;
+//
+//    @JsonProperty
+//    private LocalDateTime createDate;
 
     public Answer(User writer, String contents, Question question){
         this.writer = writer;
         this.contents = contents;
         this.question = question;
-        this.createDate = LocalDateTime.now();
-    }
-
-    public String getFormattedCreateDate(){
-        if(createDate == null)
-            return "";
-        return createDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
+//        this.createDate = LocalDateTime.now();
     }
 
     public boolean isSameWriter(User loginUser) {
